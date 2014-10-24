@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=10" >
+	<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+	<title>Color Detail SVG Tinting POC</title>
+
+	<style type="text/css">
+		div, svg, body, p {
+			color: #777;
+			font-family: tahoma;
+			padding: 0;
+			margin: 0;
+			font-size: 14px;
+		}
+		p {
+			line-height: 1.65em;
+			margin: 0 0 0.5em;
+		}
+		h2 {
+			color: #333;
+		}
+		#wrapper-outer {
+			margin: 0 auto;
+			/*max-width: 1240px;*/
+			padding: 1%;
+			position: relative;
+			width: 98%;
+		}
+		.wrapper{
+			clear: both;
+			max-width: 1100px;
+			padding-top: 2em;
+			position: relative;
+		}
+		.scene-wrapper, #details  {
+			float: left;
+			/*padding: 1%;*/
+			position: relative;
+			width: 60%;
+		}
+		#copy {
+			padding-bottom: 2em;
+			width: 100%;
+		}
+		em {
+			color: #118;
+		}
+		.wrapped {
+			float: left;
+			margin-right: 1%;
+			width: 32%;
+		}
+		.full {
+			clear: both;
+		}
+		.room-no-tint {
+			left: 0;
+			position: absolute;
+			top: 0;
+			width: 100%;
+			z-index: 1;
+		}
+		svg, svg g {
+			height: 100%;
+			position: relative;
+			z-index: 2;
+		}
+		#details {
+			margin-left: 1%;
+		}
+		#chips {
+			height: 80%;
+			position: relative;
+			z-index: 9;
+		}
+		#chips div {
+			float: left;
+			height: 10%;
+			margin: 1px;
+			width: 10%;
+		}
+		.effects #chips div {
+			cursor: pointer;
+			float: left;
+			height: 2em;
+			margin: 1px;
+			width: 2em;
+		}
+		#wall-bottom-flood {
+			flood-color: #44aac2;
+		}
+		#wall-top-flood {
+			flood-color: #44aac2;
+		}
+
+		#wallMask .group {
+			transition:  transform 2.5s;;
+			transform: translate(-2500px, 0);
+		}
+
+		.resetWallAnim #wallMask .group {
+			transition:  transform 0s;;
+		}
+
+		.paintingWall #wallMask .group {
+			transform: translate(0, 0);
+		}
+
+		#magnifiedView {
+			left: 61%;
+			overflow: hidden;
+			position: absolute;
+			top: 2em;
+			width: 39%;
+		}
+		#magnifiedView .SVG-wrapper {
+			margin: -45% 0 0 -94%;
+			position: relative;
+			width: 1000px;
+			z-index: 10;
+		}
+		/*#magnifiedView .room-no-tint {
+			width: 1000px;
+		}*/
+		/*#magnifiedWrap {
+			position: relative;
+			z-index: 10;
+		}*/
+	</style>
+
+</head>
+<body>
+
+<div id="wrapper-outer">
+
+	<div id="copy" class="effects">
+		<div class="full">
+			<h2>Transistion Effects</h2>
+			<p>
+				Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam
+			</p>
+		</div>
+		<div id="chips">
+			<div style="background-color:#90A6BE"></div><div style="background-color:#2A426A"></div><div style="background-color:#DB843C"></div><div style="background-color:#8C7A41"></div><div style="background-color:#EDD779"></div><div style="background-color:#BE4931"></div><div style="background-color:#FBB07D"></div><div style="background-color:#8CBF3E"></div><div style="background-color:#65BAAD"></div><div style="background-color:#D1CEBD"></div><div style="background-color:#2F3F37"></div><div style="background-color:#A9593A"></div><div style="background-color:#EDD779"></div><div style="background-color:#8CBF3E"></div><div style="background-color:#9C8F76"></div><div style="background-color:#e3ddd6"></div><div style="background-color:#d7493e"></div><div style="background-color:#b9af5b"></div><div style="background-color:#a6a99c"></div><div style="background-color:#555c64"></div><div style="background-color:#ebcfcb"></div><div style="background-color:#b9af5b"></div><div style="background-color:#3b363e"></div><div style="background-color:#774642"></div><div style="background-color:#c8e1e6"></div><div style="background-color:#eff0ec"></div><div style="background-color:#8ec800"></div><div style="background-color:#7e8690"></div><div style="background-color:#44aac2"></div><div style="background-color:#3b363e"></div><div style="background-color:#90b0ad"></div><div style="background-color:#aa8f52"></div><div style="background-color:#a786a0"></div><div style="background-color:#cd2e4d"></div><div style="background-color:#324038"></div><div style="background-color:#cc8f84"></div><div style="background-color:#d3c60f"></div><div style="background-color:#1a3d61"></div><div style="background-color:#453e41"></div><div style="background-color:#91754d"></div><div style="background-color:#b4a2b7"></div><div style="background-color:#908c85"></div><div style="background-color:#bc9c9e"></div><div style="background-color:#91754d"></div><div style="background-color:#4e4247"></div><div style="background-color:#35468a"></div><div style="background-color:#b93c7f"></div>
+			<!-- <div style="background-color:#90A6BE"></div><div style="background-color:#2A426A"></div><div style="background-color:#DB843C"></div><div style="background-color:#8C7A41"></div><div style="background-color:#EDD779"></div><div style="background-color:#BE4931"></div><div style="background-color:#FBB07D"></div><div style="background-color:#8CBF3E"></div><div style="background-color:#65BAAD"></div><div style="background-color:#D1CEBD"></div><div style="background-color:#2F3F37"></div><div style="background-color:#A9593A"></div><div style="background-color:#EDD779"></div><div style="background-color:#8CBF3E"></div><div style="background-color:#9C8F76"></div><div style="background-color:#e3ddd6"></div><div style="background-color:#d7493e"></div><div style="background-color:#b9af5b"></div><div style="background-color:#a6a99c"></div><div style="background-color:#555c64"></div><div style="background-color:#ebcfcb"></div><div style="background-color:#b9af5b"></div><div style="background-color:#3b363e"></div><div style="background-color:#774642"></div><div style="background-color:#c8e1e6"></div><div style="background-color:#eff0ec"></div><div style="background-color:#7e8690"></div><div style="background-color:#44aac2"></div><div style="background-color:#3b363e"></div><div style="background-color:#90b0ad"></div><div style="background-color:#aa8f52"></div><div style="background-color:#a786a0"></div><div style="background-color:#cd2e4d"></div> -->
+		</div>
+	</div>
+
+	<div class="wrapper effects">
+		<div class="scene-wrapper" id="smallView">
+			<div class="SVG-wrapper">
+				<svg xmlns="http://www.w3.org/2000/svg" version="1.1" class="svgEl" viewBox="0 0 1211 686" preserveAspectRatio="xMinYMin meet">
+				  	<defs>
+						<filter id="wall-bottom">
+							<feFlood id="wall-bottom-flood" result="tintHue" />
+							<feBlend mode="multiply" in="tintHue" in2="SourceGraphic" result="tintedWall" />
+						</filter>
+						<filter id="wall-top">
+							<feFlood id="wall-top-flood" result="tintHue" />
+							<feBlend mode="multiply" in="tintHue" in2="SourceGraphic" result="tintedWall" />
+						</filter>
+						<radialGradient id="radialGradient">
+							<stop id="offsetStart" offset="30%" stop-color="white"/>
+							<stop offset="100%" stop-color="black"/>
+						</radialGradient>
+						<mask id="roomMask">
+							<image width="1211" height="686" xlink:href="./images/room/room-alpha.png"></image>
+						</mask>
+						<mask id="wallMask">
+							<g class="group">
+								<circle fill="url(#radialGradient)"cx="2000" cy="270" r="840" />
+								<rect x="0" y="0" width="2000" height="600" fill="white" />
+							</g>
+						</mask>
+				  	</defs>
+					<g transform="translate(0,0)" id="wall-bottom">
+						<image xlink:href="./images/room/room.jpg" width="1211" height="686" filter="url(#wall-bottom)" />
+					</g>
+					<g transform="translate(0,0)" id="wall-top">
+						<image xlink:href="./images/room/room.jpg" mask="url(#wallMask)" width="1211" height="686" filter="url(#wall-top)" />
+					</g>
+					<g transform="translate(0,0)" class="room-no-tint">
+						<image xlink:href="./images/room/room.jpg" mask="url(#roomMask)" width="1211" height="686" />
+					</g>
+				</svg>
+			</div>
+		</div>
+
+		<div class="scene-wrapper hidden" id="magnifiedView">
+			<div class="SVG-wrapper">
+				<svg xmlns="http://www.w3.org/2000/svg" version="1.1" class="svgEl" viewBox="0 0 1211 686" preserveAspectRatio="xMinYMin meet">
+					<g transform="translate(0,0)" id="wall-bottom">
+						<image xlink:href="./images/room/room.jpg" width="1211" height="686" filter="url(#wall-bottom)" />
+					</g>
+					<g transform="translate(0,0)" id="wall-top">
+						<image xlink:href="./images/room/room.jpg" mask="url(#wallMask)" width="1211" height="686" filter="url(#wall-top)" />
+					</g>
+					<g transform="translate(0,0)" class="room-no-tint">
+						<image xlink:href="./images/room/room.jpg" mask="url(#roomMask)" width="1211" height="686" />
+					</g>
+				</svg>
+			</div>
+		</div>
+
+	</div> <!-- close wrapper-->
+</div> <!-- close wrapper-outer -->
+
+</div>
+
+<!-- document.write(unescape("%3Cscript src='/sherwin-williams/js/libs/jquery.modern.min.js'%3E%3C/script%3E")); -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+<script type="text/javascript">
+	if(!window.jQuery)  { /* if it failed to load from the CDN, grab it from the server */
+		document.write(unescape("%3Cscript src='jquery.js'%3E%3C/script%3E"));
+	}
+</script>
+
+<script type="text/javascript">
+	var allColors = ["90A6BE","2A426A","DB843C","8C7A41","EDD779","BE4931","FBB07D","8CBF3E","65BAAD","D1CEBD","2F3F37","A9593A","EDD779","8CBF3E","9C8F76","e3ddd6","d7493e","b9af5b","a6a99c","555c64","ebcfcb","b9af5b","3b363e","774642","c8e1e6","eff0ec","8ec800","7e8690","44aac2","3b363e","90b0ad","aa8f52","a786a0","cd2e4d","324038","cc8f84","d3c60f","1a3d61","453e41","91754d","b4a2b7","908c85","bc9c9e","91754d","4e4247","35468a","b93c7f","90A6BE","2A426A","DB843C","8C7A41","EDD779","BE4931","FBB07D","8CBF3E","65BAAD","D1CEBD","2F3F37","A9593A","EDD779","8CBF3E","9C8F76","e3ddd6","d7493e","b9af5b","a6a99c","555c64","ebcfcb","b9af5b","3b363e","774642","c8e1e6","eff0ec","7e8690","44aac2","3b363e","90b0ad","aa8f52","a786a0","cd2e4d"];
+	window.colorToggle = false;
+	$(document).ready( function(){
+		var	colorToggle = false,
+			$effectsDiv = $( ".wrapper.effects" ),
+			$chipSet = $( "#chips" ),
+			$wallBottomFlood = $( "#wall-bottom-flood" ),
+			$wallTopFlood = $( "#wall-top-flood" ),
+			$smallView = $( "#smallView" ),
+			$smallViewH = $smallView.height(),
+			$smallViewW = $smallView.width(),
+			$largeView = $( "#magnifiedView" ),
+			previousFloodColor = "44aac2";
+
+		$largeView.height( $smallViewH ).removeClass( "hidden" );
+		$( "#details" ).height( $smallViewH );
+
+		$chipSet.on( "click", "div", function(){
+			var nextfloodColor = $( this ).css( "background-color" );
+			previousFloodColor = nextfloodColor;
+			$wallTopFlood.css( "flood-color", nextfloodColor );
+			$effectsDiv.removeClass( "resetWallAnim" );
+			$effectsDiv.addClass( "paintingWall" );
+
+			window.setTimeout(function() {
+				$wallBottomFlood.css( "flood-color", previousFloodColor );
+				$effectsDiv.addClass( "resetWallAnim" );
+				$effectsDiv.removeClass( "paintingWall" );
+
+			}, 2500);
+		});
+	});
+
+
+
+</script>
+
+<!--
+
+<feComposite operator="in" in="tintedWall" in2="url(#MyGradient)" result="maskedTintWall"/>
+				  <feComposite operator="in" in="maskedTintWall" in2="SourceGraphic"/>
+
+
+/*
+var elem = $( "#wallMask g" ),
+	left = -2450,
+	newLeft,
+	lastFrame = +new Date,
+	timer;
+
+// Move the element on the right at ~600px/s
+timer = setInterval(function() {
+	var now = +new Date,
+	deltaT = now - lastFrame;
+	newLeft = left += 20 * deltaT / 16;
+
+	elem.attr("transform", "translate("+ newLeft +")" );
+
+	lastFrame = now;
+	// clear the timer at 400px to stop the animation
+	if ( newLeft > -40 ) {
+		clearInterval( timer );
+	}
+}, 16);
+
+*/
+
+
+ -->
+</body>
+
+</html>
