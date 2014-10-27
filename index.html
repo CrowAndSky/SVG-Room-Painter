@@ -4,7 +4,7 @@
 <head>
 	<meta http-equiv="X-UA-Compatible" content="IE=10" >
 	<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-	<title>Color Detail SVG Tinting POC</title>
+	<title>Room Painting with SVG Filters</title>
 
 	<style type="text/css">
 		div, svg, body, p {
@@ -23,14 +23,14 @@
 		}
 		#wrapper-outer {
 			margin: 0 auto;
-			/*max-width: 1240px;*/
+			max-width: 1240px;
 			padding: 1%;
 			position: relative;
 			width: 98%;
 		}
 		.wrapper{
 			clear: both;
-			max-width: 1100px;
+			/*max-width: 1100px;*/
 			padding-top: 2em;
 			position: relative;
 		}
@@ -80,12 +80,6 @@
 			cursor: not-allowed;
 			opacity: 0.3;
 		}
-		/*#chips div {
-			float: left;
-			height: 10%;
-			margin: 1px;
-			width: 10%;
-		}*/
 		#chips div {
 			cursor: pointer;
 			float: left;
@@ -106,13 +100,6 @@
 		#wall-top-alt-flood {
 			flood-color: #44aac2;
 		}
-		/*.wall-top-alt,
-		.wall-top,
-		.wall-bottom {
-			position: relative;
-			z-index: 1;
-		}*/
-
 		#wallMask .group,
 		#wallMaskAlt .group {
 			-webkit-transition: -webkit-transform 2.5s;
@@ -121,18 +108,6 @@
 			-ms-transform: translate(-2800px, 0);
 			transform: translate(-2750px, 0);
 		}
-/*
-		.resetWallAnim #wallMask .group {
-			-webkit-transition: -webkit-transform 0s;
-			transition:  transform 0s;
-		}*/
-
-/*		.paintingWall #wallMask .group {
-			-webkit-transform: translate(0, 0);
-			-ms-transform: translate(0, 0);
-			transform: translate(0, 0);
-		}
-*/
 		.paintingWall #wallMask .group {
 			-webkit-transform: translate(0, 0);
 			-ms-transform: translate(0, 0);
@@ -158,13 +133,6 @@
 			width: 1000px;
 			z-index: 10;
 		}
-		/*#magnifiedView .room-no-tint {
-			width: 1000px;
-		}*/
-		/*#magnifiedWrap {
-			position: relative;
-			z-index: 10;
-		}*/
 	</style>
 
 </head>
@@ -173,16 +141,38 @@
 <div id="wrapper-outer">
 
 	<div id="copy" class="effects">
+
+	<div id="copy">
 		<div class="full">
-			<h2>Transistion Effects</h2>
+			<h1>Room Painting with SVG Filters</h1>
+		</div>
+		<div class="wrapped">
+			<h2>How It Works</h2>
 			<p>
-				Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam
+				This example begins with a separate image for each room surface that is to be independently tinted. The images are desaturated, alpha transparency PNGs wherein the  Each image is fed into a SVG filter which combines it with the current tint color using one of several possible blend modes. The modes are equivalent to the same in image editing software. In this case the images contain only shadows and are blended with the multiply mode. We could also include a layer of highlights blended with the screen mode.
 			</p>
 		</div>
-		<div id="chips">
-			<div style="background-color:#90A6BE"></div><div style="background-color:#2A426A"></div><div style="background-color:#DB843C"></div><div style="background-color:#8C7A41"></div><div style="background-color:#EDD779"></div><div style="background-color:#BE4931"></div><div style="background-color:#FBB07D"></div><div style="background-color:#8CBF3E"></div><div style="background-color:#65BAAD"></div><div style="background-color:#D1CEBD"></div><div style="background-color:#2F3F37"></div><div style="background-color:#A9593A"></div><div style="background-color:#EDD779"></div><div style="background-color:#8CBF3E"></div><div style="background-color:#9C8F76"></div><div style="background-color:#e3ddd6"></div><div style="background-color:#d7493e"></div><div style="background-color:#b9af5b"></div><div style="background-color:#a6a99c"></div><div style="background-color:#555c64"></div><div style="background-color:#ebcfcb"></div>
-			<div style="background-color:#b9af5b"></div><div style="background-color:#3b363e"></div><div style="background-color:#774642"></div><div style="background-color:#c8e1e6"></div><div style="background-color:#eff0ec"></div><div style="background-color:#8ec800"></div><div style="background-color:#7e8690"></div><div style="background-color:#44aac2"></div><div style="background-color:#3b363e"></div><div style="background-color:#90b0ad"></div><div style="background-color:#aa8f52"></div><div style="background-color:#a786a0"></div><div style="background-color:#cd2e4d"></div><div style="background-color:#324038"></div><div style="background-color:#cc8f84"></div><div style="background-color:#d3c60f"></div><div style="background-color:#1a3d61"></div><div style="background-color:#453e41"></div><div style="background-color:#91754d"></div><div style="background-color:#b4a2b7"></div><div style="background-color:#908c85"></div><div style="background-color:#bc9c9e"></div><div style="background-color:#91754d"></div><div style="background-color:#4e4247"></div><div style="background-color:#35468a"></div><div style="background-color:#b93c7f"></div>
-			<!-- <div style="background-color:#90A6BE"></div><div style="background-color:#2A426A"></div><div style="background-color:#DB843C"></div><div style="background-color:#8C7A41"></div><div style="background-color:#EDD779"></div><div style="background-color:#BE4931"></div><div style="background-color:#FBB07D"></div><div style="background-color:#8CBF3E"></div><div style="background-color:#65BAAD"></div><div style="background-color:#D1CEBD"></div><div style="background-color:#2F3F37"></div><div style="background-color:#A9593A"></div><div style="background-color:#EDD779"></div><div style="background-color:#8CBF3E"></div><div style="background-color:#9C8F76"></div><div style="background-color:#e3ddd6"></div><div style="background-color:#d7493e"></div><div style="background-color:#b9af5b"></div><div style="background-color:#a6a99c"></div><div style="background-color:#555c64"></div><div style="background-color:#ebcfcb"></div><div style="background-color:#b9af5b"></div><div style="background-color:#3b363e"></div><div style="background-color:#774642"></div><div style="background-color:#c8e1e6"></div><div style="background-color:#eff0ec"></div><div style="background-color:#7e8690"></div><div style="background-color:#44aac2"></div><div style="background-color:#3b363e"></div><div style="background-color:#90b0ad"></div><div style="background-color:#aa8f52"></div><div style="background-color:#a786a0"></div><div style="background-color:#cd2e4d"></div> -->
+		<div class="wrapped">
+			<h2>SVG What?</h2>
+			<p>
+				The benefit of SVG filters is that they are painted natively by the browser using the GPU. So they are essentially a performance freebie. The SVG markup is trivial and there is no JavaScript required. So it's very light from a page weight and maintenance perspective as well. Adjusting the tint is accomplished by updating a single CSS rule. A single set of images per room scene could be used on every single color detail page, or anywhere else on the site.
+			</p>
+		</div>
+		<div class="wrapped">
+			<h2>What's the Support?</h2>
+			<p>
+				All desktop and mobile browsers support SVG filters in their current and previous versions (IE began support in IE10) - except for the Android browser, which just started supporting them.
+			</p>
+			<h2>Transistion Effects</h2>
+			<p>
+				SVG allows for compelling visual effects that are, again, executed smoothly by the GPU. If you're tinting the room below in Chrome, the colors wash across the room surface in a delightful manner.
+			</p>
+		</div>
+		<div class="full">
+			<div id="chips">
+				<div style="background-color:#90A6BE"></div><div style="background-color:#2A426A"></div><div style="background-color:#DB843C"></div><div style="background-color:#8C7A41"></div><div style="background-color:#EDD779"></div><div style="background-color:#BE4931"></div><div style="background-color:#FBB07D"></div><div style="background-color:#8CBF3E"></div><div style="background-color:#65BAAD"></div><div style="background-color:#D1CEBD"></div><div style="background-color:#2F3F37"></div><div style="background-color:#A9593A"></div><div style="background-color:#EDD779"></div><div style="background-color:#8CBF3E"></div><div style="background-color:#9C8F76"></div><div style="background-color:#e3ddd6"></div><div style="background-color:#d7493e"></div><div style="background-color:#b9af5b"></div><div style="background-color:#a6a99c"></div><div style="background-color:#555c64"></div><div style="background-color:#ebcfcb"></div>
+				<div style="background-color:#b9af5b"></div><div style="background-color:#3b363e"></div><div style="background-color:#774642"></div><div style="background-color:#c8e1e6"></div><div style="background-color:#eff0ec"></div><div style="background-color:#8ec800"></div><div style="background-color:#7e8690"></div><div style="background-color:#44aac2"></div><div style="background-color:#3b363e"></div><div style="background-color:#90b0ad"></div><div style="background-color:#aa8f52"></div><div style="background-color:#a786a0"></div><div style="background-color:#cd2e4d"></div><div style="background-color:#324038"></div><div style="background-color:#cc8f84"></div><div style="background-color:#d3c60f"></div><div style="background-color:#1a3d61"></div><div style="background-color:#453e41"></div><div style="background-color:#91754d"></div><div style="background-color:#b4a2b7"></div><div style="background-color:#908c85"></div><div style="background-color:#bc9c9e"></div><div style="background-color:#91754d"></div><div style="background-color:#4e4247"></div><div style="background-color:#35468a"></div><div style="background-color:#b93c7f"></div>
+			</div>
 		</div>
 	</div>
 
@@ -266,17 +256,15 @@
 <!-- document.write(unescape("%3Cscript src='/sherwin-williams/js/libs/jquery.modern.min.js'%3E%3C/script%3E")); -->
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
 <script type="text/javascript">
-	if(!window.jQuery)  { /* if it failed to load from the CDN, grab it from the server */
+	if(!window.jQuery)  {
 		document.write(unescape("%3Cscript src='jquery.js'%3E%3C/script%3E"));
 	}
 </script>
 
 <script type="text/javascript">
 	$(document).ready( function(){
-		var	//isPainting = false,
-			useAltPaintingWall = false,
+		var	useAltPaintingWall = false,
 			$body = $( "body" ),
-			// $effectsDiv = $( ".wrapper.effects" ),
 			$chipSet = $( "#chips" ),
 			$wallBottomFlood = $( "#wall-bottom-flood" ),
 			$wallTopFlood = $( "#wall-top-flood" ),
@@ -285,7 +273,6 @@
 			$wallTopMaskAlt = $( "#wallTopMaskAlt" ),
 			$smallView = $( "#smallView" ),
 			$smallViewH = $smallView.height(),
-			// $smallViewW = $smallView.width(),
 			$largeView = $( "#magnifiedView" ),
 			previousFloodColor = "44aac2";
 
@@ -293,84 +280,30 @@
 		$( "#details" ).height( $smallViewH );
 
 		$chipSet.on( "click", "div", function(){
-			//if ( !useAltPaintingWall ) {
-				console.log("useAltPaintingWall: " + useAltPaintingWall);
-
-				var nextfloodColor = $( this ).css( "background-color" );
-				previousFloodColor = nextfloodColor;
-
-				if ( !useAltPaintingWall ) {
-					// $( ".wall-top" ).css( "z-index", 2);
-					// $( ".wall-top-alt" ).css( "z-index", 1);
-					$( ".wall-top" ).css( "display", "block" );
-					$( ".wall-top-alt" ).css( "display", "none" );
-					$wallTopFlood.css( "flood-color", nextfloodColor );
-					$body.addClass( "paintingWall" );
-					$body.removeClass( "paintingAltWall" );
-					useAltPaintingWall = true;
-				} else {
-					// $( ".wall-top" ).css( "z-index", 1);
-					// $( ".wall-top-alt" ).css( "z-index", 2);
-					$( ".wall-top" ).css( "display", "none" );
-					$( ".wall-top-alt" ).css( "display", "block" );
-					$wallTopFloodAlt.css( "flood-color", nextfloodColor );
-					$body.addClass( "paintingAltWall" );
-					$body.removeClass( "paintingWall" );
-					useAltPaintingWall = false;
-				}
-				//$effectsDiv.removeClass( "resetWallAnim" );
-				// isPainting = true;
-
-
-				window.setTimeout(function() {
-					$wallBottomFlood.css( "flood-color", previousFloodColor );
-					//$effectsDiv.addClass( "resetWallAnim" );
-					//isPainting = false;
-					$body.removeClass( "paintingWall paintingAltWall" );
-					//
-					//console.log("test");
-					//$( "#wallMask .group" ).css("transform: translate", "-2500px, 0");
-				}, 800);
-			//}
+			var nextfloodColor = $( this ).css( "background-color" );
+			previousFloodColor = nextfloodColor;
+			if ( !useAltPaintingWall ) {
+				$( ".wall-top" ).css( "display", "block" );
+				$( ".wall-top-alt" ).css( "display", "none" );
+				$wallTopFlood.css( "flood-color", nextfloodColor );
+				$body.addClass( "paintingWall" );
+				$body.removeClass( "paintingAltWall" );
+				useAltPaintingWall = true;
+			} else {
+				$( ".wall-top" ).css( "display", "none" );
+				$( ".wall-top-alt" ).css( "display", "block" );
+				$wallTopFloodAlt.css( "flood-color", nextfloodColor );
+				$body.addClass( "paintingAltWall" );
+				$body.removeClass( "paintingWall" );
+				useAltPaintingWall = false;
+			}
+			window.setTimeout(function() {
+				$wallBottomFlood.css( "flood-color", previousFloodColor );
+				$body.removeClass( "paintingWall paintingAltWall" );
+			}, 800);
 		});
 	});
 
-
-
 </script>
-
-<!--
-
-<feComposite operator="in" in="tintedWall" in2="url(#MyGradient)" result="maskedTintWall"/>
-				  <feComposite operator="in" in="maskedTintWall" in2="SourceGraphic"/>
-
-
-/*
-var elem = $( "#wallMask g" ),
-	left = -2450,
-	newLeft,
-	lastFrame = +new Date,
-	timer;
-
-// Move the element on the right at ~600px/s
-timer = setInterval(function() {
-	var now = +new Date,
-	deltaT = now - lastFrame;
-	newLeft = left += 20 * deltaT / 16;
-
-	elem.attr("transform", "translate("+ newLeft +")" );
-
-	lastFrame = now;
-	// clear the timer at 400px to stop the animation
-	if ( newLeft > -40 ) {
-		clearInterval( timer );
-	}
-}, 16);
-
-*/
-
-
- -->
 </body>
-
 </html>
