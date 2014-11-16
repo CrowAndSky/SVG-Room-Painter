@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=10" >
+	<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+	<title>Room Painting with SVG Filters</title>
+
+	<style type="text/css">
+		body {
+			background-color: #222223;
+		}
+		div, svg, body, p {
+			color: #777;
+			font-family: tahoma;
+			padding: 0;
+			margin: 0;
+			font-size: 14px;
+		}
+		p {
+			line-height: 1.65em;
+			margin: 0 0 0.5em;
+		}
+		h2 {
+			color: #333;
+		}
+		#wrapper-outer {
+			margin: 2em auto 0;
+			max-width: 1240px;
+			position: relative;
+			width: 70%;
+		}
+		.wrapper{
+			clear: both;
+			/*max-width: 1100px;*/
+			padding-top: 2em;
+			position: relative;
+		}
+		svg, svg g {
+			height: 100%;
+			position: relative;
+			z-index: 2;
+		}
+		#room {
+			float: left;
+			width: 92%;
+		}
+		#room:after {
+			content: "";
+			display: table;
+			clear: both;
+		}
+		#chips {
+			float: left;
+			width: 8%;
+		}
+		.paintingWall #chips,
+		.paintingAltWall #chips {
+			cursor: not-allowed;
+		}
+		#chips div {
+			cursor: pointer;
+			display: inline-block;
+			height: 19.6%;
+			margin-bottom: 1%;
+			width: 95%;
+		}
+		#chips div:last {
+			margin-bottom: 0;
+		}
+		.paintingWall #chips div,
+		.paintingAltWall #chips div {
+			cursor: not-allowed;
+		}
+		#wall-bottom-flood {
+			flood-color: #44aac2;
+		}
+		#wall-top-flood {
+			flood-color: #44aac2;
+		}
+		#wall-top-alt-flood {
+			flood-color: #44aac2;
+		}
+		#wallMask .group,
+		#wallMaskAlt .group {
+			-webkit-transition: -webkit-transform 8s;
+			transition: transform 4s;
+			-webkit-transform: translate(-2800px, 0);
+			-ms-transform: translate(-2800px, 0);
+			transform: translate(-2800px, 0);
+		}
+		.paintingWall #wallMask .group {
+			-webkit-transform: translate(0, 0);
+			-ms-transform: translate(0, 0);
+			transform: translate(0, 0);
+		}
+
+		.paintingAltWall #wallMaskAlt .group {
+			-webkit-transform: translate(0, 0);
+			-ms-transform: translate(0, 0);
+			transform: translate(0, 0);
+		}
+	</style>
+
+</head>
+<body>
+
+<div id="wrapper-outer">
+	<div id="chips">
+		<div style="background-color:#F7F2D9"></div><div style="background-color:#9C8F76"></div><div style="background-color:#b9af5b"></div><div style="background-color:#bc9c9e"></div><div style="background-color:#90b0ad"></div>
+	</div>
+
+	<div id="room">
+		<div class="scene-wrapper">
+			<div class="SVG-wrapper">
+				<svg xmlns="http://www.w3.org/2000/svg" version="1.1" class="svgEl" viewBox="0 0 1250 937" preserveAspectRatio="xMinYMin meet">
+						<defs>
+						<filter id="wall-bottom">
+							<feFlood id="wall-bottom-flood" result="tintHue" />
+							<feBlend mode="multiply" in="tintHue" in2="SourceGraphic" result="tintedWall" />
+						</filter>
+						<filter id="wall-top">
+							<feFlood id="wall-top-flood" result="tintHue" />
+							<feBlend mode="multiply" in="tintHue" in2="SourceGraphic" result="tintedWall" />
+						</filter>
+						<filter id="wall-top-alt">
+							<feFlood id="wall-top-alt-flood" result="tintHue" />
+							<feBlend mode="multiply" in="tintHue" in2="SourceGraphic" result="tintedWall" />
+						</filter>
+						<radialGradient id="radialGradient">
+							<stop id="offsetStart" offset="50%" stop-color="white"/>
+							<stop offset="100%" stop-color="black"/>
+						</radialGradient>
+						<mask id="roomMask">
+							<image width="1250" height="937" xlink:href="./images/room/classic-room-alpha.png"></image>
+						</mask>
+						<mask id="wallMask">
+							<g class="group">
+								<circle fill="url(#radialGradient)"cx="2000" cy="410" r="700" />
+								<rect x="0" y="50" width="2000" height="750" fill="white" />
+							</g>
+						</mask>
+						<mask id="wallMaskAlt">
+							<g class="group">
+								<circle fill="url(#radialGradient)"cx="2000" cy="600" r="1200" />
+								<rect x="0" y="0" width="2000" height="850" fill="white" />
+							</g>
+						</mask>
+						</defs>
+					<g transform="translate(0,0)" class="wall-bottom">
+						<image xlink:href="./images/room/classic-room.jpg" width="1250" height="937" filter="url(#wall-bottom)" />
+					</g>
+					<g transform="translate(0,0)" class="wall-top">
+						<image xlink:href="./images/room/classic-room.jpg" mask="url(#wallMask)" width="1250" height="937" filter="url(#wall-top)" />
+					</g>
+					<g transform="translate(0,0)" class="wall-top-alt">
+						<image xlink:href="./images/room/classic-room.jpg" mask="url(#wallMaskAlt)" width="1250" height="937" filter="url(#wall-top-alt)" />
+					</g>
+					<g transform="translate(0,0)">
+						<image xlink:href="./images/room/classic-room.jpg" mask="url(#roomMask)" width="1250" height="937" />
+					</g>
+				</svg>
+			</div>
+		</div>
+	</div> <!-- close wrapper-->
+</div> <!-- close wrapper-outer -->
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+<script type="text/javascript">
+	if(!window.jQuery)  {
+		document.write(unescape("%3Cscript src='jquery.js'%3E%3C/script%3E"));
+	}
+</script>
+
+<script type="text/javascript">
+
+	$(document).ready( function(){
+		var	useAltPaintingWall = false,
+			$body = $( "body" ),
+			$chipSet = $( "#chips" ),
+			$wallBottomFlood = $( "#wall-bottom-flood" ),
+			$wallTopFlood = $( "#wall-top-flood" ),
+			$wallTopFloodAlt = $( "#wall-top-alt-flood" ),
+			$wallTopMask = $( "#wallTopMask" ),
+			$wallTopMaskAlt = $( "#wallTopMaskAlt" ),
+			$smallView = $( "#room" ),
+			$smallViewH = $smallView.height(),
+			previousFloodColor = "44aac2";
+			reFlowPage = function() {
+				$smallViewH = $smallView.height();
+				$chipSet.height( $smallViewH );
+			};
+
+		$( window ).resize(function() {
+			reFlowPage();
+		});
+		reFlowPage();
+
+		$chipSet.on( "click", "div", function(){
+			if ( !$body.is( ".paintingWall, .paintingAltWall") ) {
+				var nextfloodColor = $( this ).css( "background-color" );
+				previousFloodColor = nextfloodColor;
+
+				if ( !useAltPaintingWall ) {
+					$( ".wall-top" ).css( "display", "block" );
+					$( ".wall-top-alt" ).css( "display", "none" );
+					$wallTopFlood.css( "flood-color", nextfloodColor );
+					$body.addClass( "paintingWall" );
+					$body.removeClass( "paintingAltWall" );
+					useAltPaintingWall = true;
+				} else {
+					$( ".wall-top" ).css( "display", "none" );
+					$( ".wall-top-alt" ).css( "display", "block" );
+					$wallTopFloodAlt.css( "flood-color", nextfloodColor );
+					$body.addClass( "paintingAltWall" );
+					$body.removeClass( "paintingWall" );
+					useAltPaintingWall = false;
+				}
+				window.setTimeout(function() {
+					$wallBottomFlood.css( "flood-color", previousFloodColor );
+					$body.removeClass( "paintingWall paintingAltWall" );
+					if ( !useAltPaintingWall ) {
+						$( ".wall-top" ).css( "display", "none" );
+					} else {
+						$( ".wall-top-alt" ).css( "display", "none" );
+					}
+				}, 2000);
+			} else {
+				console.log("tint operation blocked");
+			}
+		});
+	});
+
+</script>
+</body>
+</html>

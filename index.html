@@ -28,7 +28,7 @@
 			margin: 2em auto 0;
 			max-width: 1240px;
 			position: relative;
-			width: 94%;
+			width: 70%;
 		}
 		.wrapper{
 			clear: both;
@@ -39,10 +39,24 @@
 		svg, svg g {
 			height: 100%;
 			position: relative;
+			width: 100%;
 			z-index: 2;
+		}
+		#tinting-layer {
+			left: 0;
+			position: absolute;
+			top: 0;
+			z-index: 1;
+		}
+		#static-room {
+			left: 0;
+			position: absolute;
+			top: 0;
+			z-index: 99;
 		}
 		#room {
 			float: left;
+			position: relative;
 			width: 92%;
 		}
 		#room:after {
@@ -72,7 +86,7 @@
 		.paintingAltWall #chips div {
 			cursor: not-allowed;
 		}
-		#wall-bottom-flood {
+		#wall-tinted-flood {
 			flood-color: #44aac2;
 		}
 		#wall-top-flood {
@@ -83,7 +97,7 @@
 		}
 		#wallMask .group,
 		#wallMaskAlt .group {
-			-webkit-transition: -webkit-transform 4s;
+			-webkit-transition: -webkit-transform 8s;
 			transition: transform 4s;
 			-webkit-transform: translate(-2800px, 0);
 			-ms-transform: translate(-2800px, 0);
@@ -113,10 +127,10 @@
 	<div id="room">
 		<div class="scene-wrapper">
 			<div class="SVG-wrapper">
-				<svg xmlns="http://www.w3.org/2000/svg" version="1.1" class="svgEl" viewBox="0 0 1250 937" preserveAspectRatio="xMinYMin meet">
+				<svg id="staticTinted" xmlns="http://www.w3.org/2000/svg" version="1.1" class="svgEl" viewBox="0 0 1250 937" preserveAspectRatio="xMinYMin meet">
 						<defs>
-						<filter id="wall-bottom">
-							<feFlood id="wall-bottom-flood" result="tintHue" />
+						<filter id="wall-tinted">
+							<feFlood id="wall-tinted-flood" result="tintHue" />
 							<feBlend mode="multiply" in="tintHue" in2="SourceGraphic" result="tintedWall" />
 						</filter>
 						<filter id="wall-top">
@@ -136,26 +150,30 @@
 						</mask>
 						<mask id="wallMask">
 							<g class="group">
-								<circle fill="url(#radialGradient)"cx="2000" cy="600" r="1200" />
-								<rect x="0" y="0" width="2000" height="850" fill="white" />
+								<circle fill="url(#radialGradient)"cx="2000" cy="410" r="700" />
+								<rect x="0" y="50" width="2000" height="750" fill="white" />
 							</g>
 						</mask>
 						<mask id="wallMaskAlt">
 							<g class="group">
-								<circle fill="url(#radialGradient)"cx="2000" cy="600" r="1200" />
-								<rect x="0" y="0" width="2000" height="850" fill="white" />
+								<circle fill="url(#radialGradient)"cx="2000" cy="410" r="700" />
+								<rect x="0" y="50" width="2000" height="750" fill="white" />
 							</g>
 						</mask>
 						</defs>
-					<g transform="translate(0,0)" class="wall-bottom">
-						<image xlink:href="./images/room/classic-room.jpg" width="1250" height="937" filter="url(#wall-bottom)" />
-					</g>
 					<g transform="translate(0,0)" class="wall-top">
-						<image xlink:href="./images/room/classic-room.jpg" mask="url(#wallMask)" width="1250" height="937" filter="url(#wall-top)" />
+						<rect x="0" y="0" fill-opacity="0.0" mask="url(#wallMask)" width="1250" height="937" filter="url(#wall-top)" />
 					</g>
-					<g transform="translate(0,0)" class="wall-top-alt">
-						<image xlink:href="./images/room/classic-room.jpg" mask="url(#wallMaskAlt)" width="1250" height="937" filter="url(#wall-top-alt)" />
+					<g transform="translate(0,0)"  class="wall-top-alt">
+						<rect x="0" y="0" fill-opacity="0.0" mask="url(#wallMaskAlt)" width="1250" height="937" filter="url(#wall-top-alt)" />
 					</g>
+				</svg>
+				<svg id="tinting-layer" xmlns="http://www.w3.org/2000/svg" version="1.1"  viewBox="0 0 1250 937" preserveAspectRatio="xMinYMin meet">
+					<g transform="translate(0,0)" class="wall-tinted">
+						<image xlink:href="./images/room/classic-room.jpg" width="1250" height="937" filter="url(#wall-tinted)" />
+					</g>
+				</svg>
+				<svg id="static-room" xmlns="http://www.w3.org/2000/svg" version="1.1"  viewBox="0 0 1250 937" preserveAspectRatio="xMinYMin meet">
 					<g transform="translate(0,0)">
 						<image xlink:href="./images/room/classic-room.jpg" mask="url(#roomMask)" width="1250" height="937" />
 					</g>
@@ -165,7 +183,6 @@
 	</div> <!-- close wrapper-->
 </div> <!-- close wrapper-outer -->
 
-<!-- document.write(unescape("%3Cscript src='/sherwin-williams/js/libs/jquery.modern.min.js'%3E%3C/script%3E")); -->
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
 <script type="text/javascript">
 	if(!window.jQuery)  {
@@ -179,17 +196,25 @@
 		var	useAltPaintingWall = false,
 			$body = $( "body" ),
 			$chipSet = $( "#chips" ),
-			$wallBottomFlood = $( "#wall-bottom-flood" ),
+			$wallTintedFlood = $( "#wall-tinted-flood" ),
+			$wallTinted = $( "#tinting-layer" ),
+			$staticRoom = $( "#static-room" ),
 			$wallTopFlood = $( "#wall-top-flood" ),
 			$wallTopFloodAlt = $( "#wall-top-alt-flood" ),
 			$wallTopMask = $( "#wallTopMask" ),
 			$wallTopMaskAlt = $( "#wallTopMaskAlt" ),
-			$smallView = $( "#room" ),
-			$smallViewH = $smallView.height(),
+			$staticTinted = $( "#staticTinted" ),
+			$staticTintedH,
+			$staticTintedW,
 			previousFloodColor = "44aac2";
 			reFlowPage = function() {
-				$smallViewH = $smallView.height();
-				$chipSet.height( $smallViewH );
+				$staticTintedH = $staticTinted.height();
+				$staticTintedW = $staticTinted.width();
+				$chipSet.height( $staticTintedH );
+				$wallTinted.height( $staticTintedH );
+				$staticRoom.height( $staticTintedH );
+				$wallTinted.width( $staticTintedW );
+				$staticRoom.width( $staticTintedW );
 			};
 
 		$( window ).resize(function() {
@@ -201,6 +226,7 @@
 			if ( !$body.is( ".paintingWall, .paintingAltWall") ) {
 				var nextfloodColor = $( this ).css( "background-color" );
 				previousFloodColor = nextfloodColor;
+				$wallTinted.css(  "z-index",  "1" );
 
 				if ( !useAltPaintingWall ) {
 					$( ".wall-top" ).css( "display", "block" );
@@ -218,18 +244,76 @@
 					useAltPaintingWall = false;
 				}
 				window.setTimeout(function() {
-					$wallBottomFlood.css( "flood-color", previousFloodColor );
-					$body.removeClass( "paintingWall paintingAltWall" );
-					if ( !useAltPaintingWall ) {
-						$( ".wall-top" ).css( "display", "none" );
-					} else {
-						$( ".wall-top-alt" ).css( "display", "none" );
-					}
+					// $wallBottomFlood.css( "flood-color", previousFloodColor );
+					// $body.removeClass( "paintingWall paintingAltWall" );
+					// if ( !useAltPaintingWall ) {
+					// 	$( ".wall-top" ).css( "display", "none" );
+					// } else {
+					// 	$( ".wall-top-alt" ).css( "display", "none" );
+					// }
+
+
+
+					$wallTintedFlood.css( "flood-color", previousFloodColor );
+					$wallTinted
+						.css(  { "opacity" : 0,  "z-index" : "9" }  )
+						.animate( { opacity: 1 }, 500, function() {
+							$body.removeClass( "paintingWall paintingAltWall" );
+						});
+
+
+
+
 				}, 2000);
 			} else {
 				console.log("tint operation blocked");
 			}
 		});
+
+
+
+
+
+// $chipSet.on( "click", "div", function(){
+// 			var nextfloodColor = $( this ).css( "background-color" );
+// 			previousFloodColor = nextfloodColor;
+
+// 			$wallTinted.css(  "z-index",  "1" );
+
+// 			if ( !useAltPaintingWall ) {
+// 				$( ".wall-top" ).css( "display", "block" );
+// 				$( ".wall-top-alt" ).css( "display", "none" );
+// 				$wallTopFlood.css( "flood-color", nextfloodColor );
+// 				$body.addClass( "paintingWall" );
+// 				$body.removeClass( "paintingAltWall" );
+// 				useAltPaintingWall = true;
+// 			} else {
+// 				$( ".wall-top" ).css( "display", "none" );
+// 				$( ".wall-top-alt" ).css( "display", "block" );
+// 				$wallTopFloodAlt.css( "flood-color", nextfloodColor );
+// 				$body.addClass( "paintingAltWall" );
+// 				$body.removeClass( "paintingWall" );
+// 				useAltPaintingWall = false;
+// 			}
+// 			window.setTimeout(function() {
+// 				$wallTintedFlood.css( "flood-color", previousFloodColor );
+// 				$wallTinted
+// 					.css(  { "opacity" : 0,  "z-index" : "9" }  )
+// 					.animate( { opacity: 1 }, 500, function() {
+// 						$body.removeClass( "paintingWall paintingAltWall" );
+// 					});
+// 			}, 800);
+// 		});
+
+
+
+
+
+
+
+
+
+
 	});
 
 </script>
