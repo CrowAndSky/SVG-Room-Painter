@@ -25,10 +25,11 @@
 			color: #333;
 		}
 		#wrapper-outer {
-			margin: 2em auto 0;
+			margin: 0 auto;
 			max-width: 1240px;
+			padding: 1%;
 			position: relative;
-			width: 70%;
+			width: 98%;
 		}
 		.wrapper{
 			clear: both;
@@ -36,11 +37,38 @@
 			padding-top: 2em;
 			position: relative;
 		}
+/*		.scene-wrapper, #details  {
+			float: left;
+			position: relative;
+			width: 100%;
+		}
+		#copy {
+			padding-bottom: 2em;
+			width: 100%;
+		}*/
+		/*.wrapped {
+			float: left;
+			margin-right: 1%;
+			width: 32%;
+		}
+		.full {
+			clear: both;
+		}*/
+		/*.room-no-tint {
+			left: 0;
+			position: absolute;
+			top: 0;
+			width: 100%;
+			z-index: 1;
+		}*/
 		svg, svg g {
 			height: 100%;
 			position: relative;
 			z-index: 2;
 		}
+		/*#details {
+			margin-left: 1%;
+		}*/
 		#room {
 			float: left;
 			width: 92%;
@@ -53,20 +81,21 @@
 		#chips {
 			float: left;
 			width: 8%;
+			/*height: 80%;*/
+			/*position: relative;*/
+			/*z-index: 9;*/
 		}
 		.paintingWall #chips,
 		.paintingAltWall #chips {
 			cursor: not-allowed;
+			opacity: 0.3;
 		}
 		#chips div {
 			cursor: pointer;
-			display: inline-block;
-			height: 19.6%;
-			margin-bottom: 1%;
-			width: 95%;
-		}
-		#chips div:last {
-			margin-bottom: 0;
+			float: left;
+			height: 2em;
+			margin: 1px;
+			width: 2em;
 		}
 		.paintingWall #chips div,
 		.paintingAltWall #chips div {
@@ -83,8 +112,8 @@
 		}
 		#wallMask .group,
 		#wallMaskAlt .group {
-			-webkit-transition: -webkit-transform 8s;
-			transition: transform 4s;
+			-webkit-transition: -webkit-transform 3.5s ease-in;
+			transition: transform 3.5s ease-in;
 			-webkit-transform: translate(-2800px, 0);
 			-ms-transform: translate(-2800px, 0);
 			transform: translate(-2800px, 0);
@@ -106,15 +135,26 @@
 <body>
 
 <div id="wrapper-outer">
-	<div id="chips">
-		<div style="background-color:#F7F2D9"></div><div style="background-color:#9C8F76"></div><div style="background-color:#b9af5b"></div><div style="background-color:#bc9c9e"></div><div style="background-color:#90b0ad"></div>
-	</div>
+	<!-- <div id="copy">
+		<div class="full"> -->
+			<div id="chips">
+				<div style="background-color:#EDD779"></div>
+				<div style="background-color:#b9af5b"></div>
+				<div style="background-color:#9C8F76"></div>
+				<div style="background-color:#bc9c9e"></div>
+				<div style="background-color:#90b0ad"></div>
+<!--
+				<div style="background-color:#BE4931"></div><div style="background-color:#FBB07D"></div><div style="background-color:#8CBF3E"></div><div style="background-color:#65BAAD"></div><div style="background-color:#D1CEBD"></div><div style="background-color:#2F3F37"></div><div style="background-color:#A9593A"></div><div style="background-color:#EDD779"></div><div style="background-color:#8CBF3E"></div><div style="background-color:#9C8F76"></div><div style="background-color:#e3ddd6"></div><div style="background-color:#d7493e"></div><div style="background-color:#b9af5b"></div><div style="background-color:#a6a99c"></div><div style="background-color:#555c64"></div><div style="background-color:#ebcfcb"></div>
+				<div style="background-color:#b9af5b"></div><div style="background-color:#3b363e"></div><div style="background-color:#774642"></div><div style="background-color:#c8e1e6"></div><div style="background-color:#eff0ec"></div><div style="background-color:#8ec800"></div><div style="background-color:#7e8690"></div><div style="background-color:#44aac2"></div><div style="background-color:#3b363e"></div><div style="background-color:#90b0ad"></div><div style="background-color:#aa8f52"></div><div style="background-color:#a786a0"></div><div style="background-color:#cd2e4d"></div><div style="background-color:#324038"></div><div style="background-color:#cc8f84"></div><div style="background-color:#d3c60f"></div><div style="background-color:#1a3d61"></div><div style="background-color:#453e41"></div><div style="background-color:#91754d"></div><div style="background-color:#b4a2b7"></div><div style="background-color:#908c85"></div><div style="background-color:#bc9c9e"></div><div style="background-color:#91754d"></div><div style="background-color:#4e4247"></div><div style="background-color:#35468a"></div><div style="background-color:#b93c7f"></div> -->
+			</div>
+		<!-- </div>
+	</div> -->
 
 	<div id="room">
 		<div class="scene-wrapper">
 			<div class="SVG-wrapper">
 				<svg xmlns="http://www.w3.org/2000/svg" version="1.1" class="svgEl" viewBox="0 0 1250 937" preserveAspectRatio="xMinYMin meet">
-						<defs>
+				  	<defs>
 						<filter id="wall-bottom">
 							<feFlood id="wall-bottom-flood" result="tintHue" />
 							<feBlend mode="multiply" in="tintHue" in2="SourceGraphic" result="tintedWall" />
@@ -128,7 +168,7 @@
 							<feBlend mode="multiply" in="tintHue" in2="SourceGraphic" result="tintedWall" />
 						</filter>
 						<radialGradient id="radialGradient">
-							<stop id="offsetStart" offset="50%" stop-color="white"/>
+							<stop id="offsetStart" offset="30%" stop-color="white"/>
 							<stop offset="100%" stop-color="black"/>
 						</radialGradient>
 						<mask id="roomMask">
@@ -136,17 +176,17 @@
 						</mask>
 						<mask id="wallMask">
 							<g class="group">
-								<circle fill="url(#radialGradient)"cx="2000" cy="410" r="700" />
-								<rect x="0" y="50" width="2000" height="750" fill="white" />
+								<circle fill="url(#radialGradient)"cx="2000" cy="440" r="880" />
+								<rect x="0" y="0" width="2000" height="850" fill="white" />
 							</g>
 						</mask>
 						<mask id="wallMaskAlt">
 							<g class="group">
-								<circle fill="url(#radialGradient)"cx="2000" cy="600" r="1200" />
+								<circle fill="url(#radialGradient)"cx="2000" cy="440" r="880" />
 								<rect x="0" y="0" width="2000" height="850" fill="white" />
 							</g>
 						</mask>
-						</defs>
+				  	</defs>
 					<g transform="translate(0,0)" class="wall-bottom">
 						<image xlink:href="./images/room/classic-room.jpg" width="1250" height="937" filter="url(#wall-bottom)" />
 					</g>
@@ -165,6 +205,7 @@
 	</div> <!-- close wrapper-->
 </div> <!-- close wrapper-outer -->
 
+<!-- document.write(unescape("%3Cscript src='/sherwin-williams/js/libs/jquery.modern.min.js'%3E%3C/script%3E")); -->
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
 <script type="text/javascript">
 	if(!window.jQuery)  {
@@ -187,6 +228,7 @@
 			$smallViewH = $smallView.height(),
 			previousFloodColor = "44aac2";
 			reFlowPage = function() {
+				console.log("reflow: ");
 				$smallViewH = $smallView.height();
 				$chipSet.height( $smallViewH );
 			};
@@ -195,39 +237,33 @@
 			reFlowPage();
 		});
 		reFlowPage();
+		// $largeView.removeClass( "hidden" );
+		console.log($smallViewH);
+
+		$chipSet.height( $smallViewH );
 
 		$chipSet.on( "click", "div", function(){
-			if ( !$body.is( ".paintingWall, .paintingAltWall") ) {
-				var nextfloodColor = $( this ).css( "background-color" );
-				previousFloodColor = nextfloodColor;
-
-				if ( !useAltPaintingWall ) {
-					$( ".wall-top" ).css( "display", "block" );
-					$( ".wall-top-alt" ).css( "display", "none" );
-					$wallTopFlood.css( "flood-color", nextfloodColor );
-					$body.addClass( "paintingWall" );
-					$body.removeClass( "paintingAltWall" );
-					useAltPaintingWall = true;
-				} else {
-					$( ".wall-top" ).css( "display", "none" );
-					$( ".wall-top-alt" ).css( "display", "block" );
-					$wallTopFloodAlt.css( "flood-color", nextfloodColor );
-					$body.addClass( "paintingAltWall" );
-					$body.removeClass( "paintingWall" );
-					useAltPaintingWall = false;
-				}
-				window.setTimeout(function() {
-					$wallBottomFlood.css( "flood-color", previousFloodColor );
-					$body.removeClass( "paintingWall paintingAltWall" );
-					if ( !useAltPaintingWall ) {
-						$( ".wall-top" ).css( "display", "none" );
-					} else {
-						$( ".wall-top-alt" ).css( "display", "none" );
-					}
-				}, 2000);
+			var nextfloodColor = $( this ).css( "background-color" );
+			previousFloodColor = nextfloodColor;
+			if ( !useAltPaintingWall ) {
+				$( ".wall-top" ).css( "display", "block" );
+				$( ".wall-top-alt" ).css( "display", "none" );
+				$wallTopFlood.css( "flood-color", nextfloodColor );
+				$body.addClass( "paintingWall" );
+				$body.removeClass( "paintingAltWall" );
+				useAltPaintingWall = true;
 			} else {
-				console.log("tint operation blocked");
+				$( ".wall-top" ).css( "display", "none" );
+				$( ".wall-top-alt" ).css( "display", "block" );
+				$wallTopFloodAlt.css( "flood-color", nextfloodColor );
+				$body.addClass( "paintingAltWall" );
+				$body.removeClass( "paintingWall" );
+				useAltPaintingWall = false;
 			}
+			window.setTimeout(function() {
+				$wallBottomFlood.css( "flood-color", previousFloodColor );
+				$body.removeClass( "paintingWall paintingAltWall" );
+			}, 800);
 		});
 	});
 

@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=10" >
+	<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+	<title>Color Detail SVG Tinting POC</title>
+
+	<style type="text/css">
+		div, svg, body, p {
+			color: #777;
+			font-family: tahoma;
+			padding: 0;
+			margin: 0;
+			font-size: 14px;
+		}
+		p {
+			line-height: 1.65em;
+			margin: 0 0 0.5em;
+		}
+		h2 {
+			color: #333;
+		}
+		#wrapper-outer {
+			margin: 0 auto;
+			/*max-width: 1240px;*/
+			padding: 1%;
+			position: relative;
+			width: 98%;
+		}
+		#wrapper {
+			clear: both;
+			padding-top: 2em;
+			position: relative;
+		}
+		.scene-wrapper, #details  {
+			float: left;
+			/*padding: 1%;*/
+			position: relative;
+			width: 60%;
+		}
+		/*#copy {
+			padding-bottom: 2em;
+			width: 100%;
+		}
+		em {
+			color: #118;
+		}
+		.wrapped {
+			float: left;
+			margin-right: 1%;
+			width: 32%;
+		}
+		.full {
+			clear: both;
+		}*/
+		.room-no-tint {
+			left: 0;
+			position: absolute;
+			top: 0;
+			width: 100%;
+			z-index: 1;
+		}
+		svg, svg g {
+			height: 100%;
+			position: relative;
+			z-index: 2;
+		}
+		/*#details {
+			margin-left: 1%;
+		}
+		#chips {
+			height: 80%;
+			position: relative;
+			z-index: 9;
+		}
+		#chips div {
+			float: left;
+			height: 10%;
+			margin: 1px;
+			width: 10%;
+		}*/
+		#tintFlood {
+			flood-color: #5689de;
+			-webkit-transition: flood-color 0.15s;
+			transition: flood-color 0.15s;
+		}
+		#tintFlood2 {
+			flood-color: #de5689;
+			-webkit-transition: flood-color 0.15s;
+			transition: flood-color 0.15s;
+		}
+
+		/*#paintingAnimMask g {
+			transform: translate(-1500);
+			-webkit-transform: translate(-1500);
+			transition: transform 0.95s;
+			-webkit-transition: -webkit-transform 1s;
+		}
+
+		#paintingAnimMask g.moved {
+			transform: translate(0);
+			-webkit-transform: translate(0);
+		}*/
+
+
+
+		#magnifiedView {
+			height: 400px;
+			left: 61%;
+			overflow: hidden;
+			position: absolute;
+			top: 2em;
+			width: 39%;
+		}
+		#magnifiedView .SVG-wrapper {
+			margin: -20% 0 0 -20%;
+			position: relative;
+			width: 1000px;
+			z-index: 10;
+		}
+		#magnifiedView .room-no-tint {
+			width: 1000px;
+		}
+
+
+		@keyframes cxChange {
+			/*0% { -webkit-transform:translate(0); }
+    		100% { -webkit-transform:translate(400px); }*/
+
+    		0% { cx: 0; }
+    		100% { cx: 800; }
+		  }
+
+		  #maskCircle.moving {
+			-webkit-animation-name: cxChange;
+        	-webkit-animation-duration: 3s;
+        	transform-origin: 50%;
+		}
+
+		/*
+		#magnifiedWrap {
+			position: relative;
+			z-index: 10;
+		}*/
+	</style>
+
+</head>
+<body>
+
+<div id="wrapper-outer">
+<div id="wrapper">
+
+	<div class="scene-wrapper" id="smallView">
+		<div class="SVG-wrapper">
+			<svg xmlns="http://www.w3.org/2000/svg" version="1.1" class="svgEl" viewBox="0 0 1211 686" preserveAspectRatio="xMinYMin meet">
+			  <defs>
+				<filter id="tint">
+				  <feFlood id="tintFlood" result="tintHue" />
+				  <feBlend mode="multiply" in="tintHue" in2="SourceGraphic" result="tintedWall" />
+				  <feComposite operator="in" in="tintedWall" in2="SourceGraphic"/>
+				</filter>
+				<filter id="tint2">
+				  <feFlood id="tintFlood2" result="tintHue" />
+				  <feBlend mode="multiply" in="tintHue" in2="SourceGraphic" result="tintedWall" />
+				  <feComposite operator="in" in="tintedWall" in2="SourceGraphic"/>
+				</filter>
+				<radialGradient id="MyGradient">
+					<stop id="offsetStart" offset="30%" stop-color="white"/>
+					<stop offset="100%" stop-color="black"/>
+				</radialGradient>
+				<linearGradient id="Gradient1">
+			        <stop class="stop1" offset="0%" stop-color="#fff" />
+			        <stop class="stop2" offset="50%" stop-color="#fff"/>
+			        <stop class="stop3" offset="100%"  stop-color="#000"/>
+			      </linearGradient>
+				<mask id="roomMask">
+				  <image width="1211" height="686" xlink:href="./images/room/room-alpha.png"></image>
+				</mask>
+				<mask id="paintingAnimMask">
+					<g transform="translate(-2450,0)">
+						<!-- <ellipse fill="url(#MyGradient)"cx="1211" cy="200" ry="1200" rx="400" />
+						<ellipse fill="white" cx="800" cy="200" ry="1200" rx="400" /> -->
+						<!-- <circle fill="url(#MyGradient)"cx="1211" cy="200" r="1800" /> -->
+						<rect x="0" y="0" width="2450" height="600" fill="url(#Gradient1)" />
+					</g>
+				</mask>
+				<mask id="paintingAnimMask2">
+					<g transform="translate(-2800,0)">
+						<circle fill="url(#MyGradient)"cx="2000" cy="270" r="840" />
+						<rect x="0" y="0" width="2000" height="600" fill="white" />
+					</g>
+				</mask>
+			  </defs>
+				<g transform="translate(0,0)" id="wall-top">
+					<image xlink:href="./images/room/room.jpg" width="1211" height="686" filter="url(#tint)" />
+				</g>
+				<g transform="translate(0,0)" id="wall-bottom">
+					<image xlink:href="./images/room/room.jpg" mask="url(#paintingAnimMask2)" width="1211" height="686" filter="url(#tint2)" />
+				</g>
+				<g transform="translate(0,0)" class="room-no-tint">
+					<image xlink:href="./images/room/room.jpg" mask="url(#roomMask)" width="1211" height="686" />
+				</g>
+			</svg>
+		</div>
+		<!-- <img class="room-no-tint" src="./images/room/room.jpg"> -->
+	</div>
+
+	<div class="scene-wrapper" id="magnifiedView">
+		<div class="SVG-wrapper">
+			<svg xmlns="http://www.w3.org/2000/svg" version="1.1" class="svgEl" viewBox="0 0 1211 686" preserveAspectRatio="xMinYMin meet">
+				<g transform="translate(0,0)">
+					<image xlink:href="./images/room/wall.jpg" width="1211" height="686" filter="url(#tint)" />
+				</g>
+			</svg>
+		</div>
+		<img class="room-no-tint" src="./images/room/room.jpg">
+	</div>
+
+</div> <!-- close wrapper-->
+</div> <!-- close wrapper-outer -->
+
+
+</div>
+
+<!-- document.write(unescape("%3Cscript src='/sherwin-williams/js/libs/jquery.modern.min.js'%3E%3C/script%3E")); -->
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+<script type="text/javascript">
+	if(!window.jQuery)  { /* if it failed to load from the CDN, grab it from the server */
+		document.write(unescape("%3Cscript src='jquery.js'%3E%3C/script%3E"));
+	}
+</script>
+
+<script type="text/javascript">
+
+// function animLoop( render, element ) {
+//     var running, lastFrame = +new Date;
+//     function loop( now ) {
+//         // stop the loop if render returned false
+//         if ( running !== false ) {
+//             requestAnimationFrame( loop, element );
+//             running = render( now - lastFrame );
+//             lastFrame = now;
+//         }
+//     }
+//     loop( lastFrame );
+// }
+
+// var elem = $( "#maskCircle" ),
+// 	left = 0,
+// 	deltaT = 16;
+
+
+
+
+	var allColors = ["90A6BE","2A426A","DB843C","8C7A41","EDD779","BE4931","FBB07D","8CBF3E","65BAAD","D1CEBD","2F3F37","A9593A","EDD779","8CBF3E","9C8F76","e3ddd6","d7493e","b9af5b","a6a99c","555c64","ebcfcb","b9af5b","3b363e","774642","c8e1e6","eff0ec","8ec800","7e8690","44aac2","3b363e","90b0ad","aa8f52","a786a0","cd2e4d","324038","cc8f84","d3c60f","1a3d61","453e41","91754d","b4a2b7","908c85","bc9c9e","91754d","4e4247","35468a","b93c7f","90A6BE","2A426A","DB843C","8C7A41","EDD779","BE4931","FBB07D","8CBF3E","65BAAD","D1CEBD","2F3F37","A9593A","EDD779","8CBF3E","9C8F76","e3ddd6","d7493e","b9af5b","a6a99c","555c64","ebcfcb","b9af5b","3b363e","774642","c8e1e6","eff0ec","7e8690","44aac2","3b363e","90b0ad","aa8f52","a786a0","cd2e4d"];
+	window.colorToggle = false
+
+	$(document).ready( function(){
+
+// animLoop(function( deltaT ) {
+//     elem.attr("cx", left += 5 * deltaT / 16 );
+//     if ( left > 1000 ) {
+//      	return false;
+//     }
+// 	// optional 2nd arg: elem containing the animation
+// 	}  //, animWrapper
+// );
+
+var elem = $( "#paintingAnimMask2 g" ),
+	left = -2450,
+	newLeft,
+	lastFrame = +new Date,
+	timer;
+
+// Move the element on the right at ~600px/s
+timer = setInterval(function() {
+	var now = +new Date,
+	deltaT = now - lastFrame;
+	newLeft = left += 20 * deltaT / 16;
+
+	elem.attr("transform", "translate("+ newLeft +")" );
+
+	lastFrame = now;
+	// clear the timer at 400px to stop the animation
+	if ( newLeft > -40 ) {
+		clearInterval( timer );
+	}
+}, 16);
+
+		//$( "#paintingAnimMask" ).addClass( "moved" ); //  .attr("cx","400");
+		//$( "#maskCircle" ).animate({cx:400},300);
+		//$( "#offsetStart" ).attr("offset","100%");
+		//$( "#offsetStart" ).animate({"offset":"100%"},300);
+
+/*
+		try setting gradiant as composite input of filter with alpha gradiant
+		search on css trans for svg proper
+			then on animating attrs
+				finally setint to manually animate
+
+		try referening first SVG from second
+
+		var	colorToggle = false,
+			$chipSet = $( "#chips" ),
+			$tintFlood = $( "#tintFlood" ),
+			$tintFlood2 = $( "#tint2Flood" ),
+			$tintFlood3 = $( "#tint3Flood" ),
+			$continuousTint = $( "#continuousTint" ),
+			$smallView = $( "#smallView" ),
+			$smallViewH = $smallView.height(),
+			$smallViewW = $smallView.width(),
+			$largeView = $( "#magnifiedView" ),
+			$largeViewSVG = $largeView.children( ".SVG-wrapper" );
+			$largeViewImg = $largeView.children( ".room-no-tint" );
+
+			magnifyRatio = parseFloat( 800 / $smallViewH );
+			timedTintChange = function( floodColor, delay, colorToggle ) {
+				var nextfloodColor = floodColor;
+				var nextDelay = parseInt( delay );
+				var toggleState = colorToggle;
+				window.setTimeout(function() {
+					if ( toggleState ) {
+						$tintFlood.css( "flood-color", "#a6a99c" );
+						$tintFlood2.css( "flood-color", "#e3ddd6" );
+					} else {
+						$tintFlood.css( "flood-color", "#555c64" );
+						$tintFlood2.css( "flood-color", "#D1CEBD" );
+					}
+					$tintFlood3.css( "flood-color", nextfloodColor );
+
+				}, nextDelay);
+			};
+
+		$largeView.height( $smallViewH );
+		$( "#details" ).height( $smallViewH );
+
+		$chipSet.on( "click", "div", function(){
+			if ( colorToggle ) {
+				$tintFlood.css( "flood-color", "#a6a99c" );
+				$tintFlood2.css( "flood-color", "#e3ddd6" );
+				colorToggle = false;
+			} else {
+				$tintFlood.css( "flood-color", "#555c64" );
+				$tintFlood2.css( "flood-color", "#D1CEBD" );
+				colorToggle = true;
+			}
+			$tintFlood3.css( "flood-color", $( this ).css( "background-color" ) );
+		});
+
+		$continuousTint.on( "click", function(){
+			for ( var i = 0; i < allColors.length; i++ ) {
+				var floodColor = "#" + allColors[i],
+					delay = i * 200;
+				timedTintChange( floodColor, delay, colorToggle );
+				colorToggle = colorToggle ? false : true;
+			}
+		})
+
+		$smallView.mouseenter( function( e ){
+			$largeView.fadeIn(200);
+		});
+
+		$smallView.mouseleave( function( e ){
+			$largeView.fadeOut(150);
+		});
+
+		$smallView.mousemove( function( e ){
+			var smallOffset = $(this).offset(),
+			offsetL = "-" + parseInt( ( e.pageX - smallOffset.left ) * magnifyRatio -200 ) + "px",
+			offsetT = "-" + parseInt( ( e.pageY - smallOffset.top ) * magnifyRatio -200 ) + "px";
+
+			$( "#magnifiedWrap" ).css({
+				"-webkit-transform" : "translate(" + offsetL + "," + offsetT + ")",
+				"transform" : "translate(" + offsetL + "," + offsetT + ")"
+			});
+		});
+
+*/
+	});
+
+
+
+</script>
+
+<!--
+
+<feComposite operator="in" in="tintedWall" in2="url(#MyGradient)" result="maskedTintWall"/>
+				  <feComposite operator="in" in="maskedTintWall" in2="SourceGraphic"/>
+
+ -->
+</body>
+
+</html>

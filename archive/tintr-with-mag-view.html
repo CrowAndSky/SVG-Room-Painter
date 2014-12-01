@@ -30,18 +30,22 @@
 		}
 		.wrapper{
 			clear: both;
-			max-width: 1200px;
+			/*max-width: 1100px;*/
 			padding-top: 2em;
 			position: relative;
 		}
 		.scene-wrapper, #details  {
 			float: left;
+			/*padding: 1%;*/
 			position: relative;
-			width: 100%;
+			width: 60%;
 		}
 		#copy {
 			padding-bottom: 2em;
 			width: 100%;
+		}
+		em {
+			color: #118;
 		}
 		.wrapped {
 			float: left;
@@ -51,24 +55,20 @@
 		.full {
 			clear: both;
 		}
+		.room-no-tint {
+			left: 0;
+			position: absolute;
+			top: 0;
+			width: 100%;
+			z-index: 1;
+		}
 		svg, svg g {
 			height: 100%;
 			position: relative;
-			width: 100%;
 			z-index: 2;
 		}
-		#tinting-layer {
-			left: 0;
-			position: absolute;
-			top: 0;
-			z-index: 1;
-		}
-
-		#static-room {
-			left: 0;
-			position: absolute;
-			top: 0;
-			z-index: 99;
+		#details {
+			margin-left: 1%;
 		}
 		#chips {
 			height: 80%;
@@ -96,7 +96,7 @@
 			display: table;
 			clear: both;
 		}
-		#wall-tinted-flood {
+		#wall-bottom-flood {
 			flood-color: #44aac2;
 		}
 		#wall-top-flood {
@@ -124,7 +124,22 @@
 			-ms-transform: translate(0, 0);
 			transform: translate(0, 0);
 		}
+
+		#magnifiedView {
+			left: 61%;
+			overflow: hidden;
+			position: absolute;
+			top: 2em;
+			width: 39%;
+		}
+		#magnifiedView .SVG-wrapper {
+			margin: -45% 0 0 -94%;
+			position: relative;
+			width: 1000px;
+			z-index: 10;
+		}
 	</style>
+
 </head>
 <body>
 
@@ -135,6 +150,28 @@
 	<div id="copy">
 		<div class="full">
 			<h1>Room Painting with SVG Filters</h1>
+		</div>
+		<div class="wrapped">
+			<h2>How It Works</h2>
+			<p>
+				This example begins with a separate image for each room surface that is to be independently tinted. The images are desaturated, alpha transparency PNGs wherein the  Each image is fed into a SVG filter which combines it with the current tint color using one of several possible blend modes. The modes are equivalent to the same in image editing software. In this case the images contain only shadows and are blended with the multiply mode. We could also include a layer of highlights blended with the screen mode.
+			</p>
+		</div>
+		<div class="wrapped">
+			<h2>SVG What?</h2>
+			<p>
+				The benefit of SVG filters is that they are painted natively by the browser using the GPU. So they are essentially a performance freebie. The SVG markup is trivial and there is no JavaScript required. So it's very light from a page weight and maintenance perspective as well. Adjusting the tint is accomplished by updating a single CSS rule. A single set of images per room scene could be used on every single color detail page, or anywhere else on the site.
+			</p>
+		</div>
+		<div class="wrapped">
+			<h2>What's the Support?</h2>
+			<p>
+				All desktop and mobile browsers support SVG filters in their current and previous versions (IE began support in IE10) - except for the Android browser, which just started supporting them.
+			</p>
+			<h2>Transistion Effects</h2>
+			<p>
+				SVG allows for compelling visual effects that are, again, executed smoothly by the GPU. If you're tinting the room below in Chrome, the colors wash across the room surface in a delightful manner.
+			</p>
 		</div>
 		<div class="full">
 			<div id="chips">
@@ -147,10 +184,10 @@
 	<div class="wrapper effects">
 		<div class="scene-wrapper" id="smallView">
 			<div class="SVG-wrapper">
-				<svg id="animation-layer" xmlns="http://www.w3.org/2000/svg" version="1.1"  viewBox="0 0 1211 686" preserveAspectRatio="xMinYMin meet">
+				<svg xmlns="http://www.w3.org/2000/svg" version="1.1" class="svgEl" viewBox="0 0 1211 686" preserveAspectRatio="xMinYMin meet">
 				  	<defs>
-						<filter id="wall-tinted">
-							<feFlood id="wall-tinted-flood" result="tintHue" />
+						<filter id="wall-bottom">
+							<feFlood id="wall-bottom-flood" result="tintHue" />
 							<feBlend mode="multiply" in="tintHue" in2="SourceGraphic" result="tintedWall" />
 						</filter>
 						<filter id="wall-top">
@@ -162,7 +199,7 @@
 							<feBlend mode="multiply" in="tintHue" in2="SourceGraphic" result="tintedWall" />
 						</filter>
 						<radialGradient id="radialGradient">
-							<stop id="offsetStart" offset="50%" stop-color="white"/>
+							<stop id="offsetStart" offset="30%" stop-color="white"/>
 							<stop offset="100%" stop-color="black"/>
 						</radialGradient>
 						<mask id="roomMask">
@@ -170,7 +207,7 @@
 						</mask>
 						<mask id="wallMask">
 							<g class="group">
-								<circle fill="url(#radialGradient)"cx="2000" cy="270" r="500" />
+								<circle fill="url(#radialGradient)"cx="2000" cy="270" r="840" />
 								<rect x="0" y="0" width="2000" height="600" fill="white" />
 							</g>
 						</mask>
@@ -181,25 +218,41 @@
 							</g>
 						</mask>
 				  	</defs>
+					<g transform="translate(0,0)" class="wall-bottom">
+						<image xlink:href="./images/room/room.jpg" width="1211" height="686" filter="url(#wall-bottom)" />
+					</g>
 					<g transform="translate(0,0)" class="wall-top">
-						<rect x="0" y="0" fill-opacity="0.0" mask="url(#wallMask)" width="1211" height="686" filter="url(#wall-top)" />
+						<image xlink:href="./images/room/room.jpg" mask="url(#wallMask)" width="1211" height="686" filter="url(#wall-top)" />
 					</g>
-					<g transform="translate(0,0)"  class="wall-top-alt">
-						<rect x="0" y="0" fill-opacity="0.0" mask="url(#wallMaskAlt)" width="1211" height="686" filter="url(#wall-top-alt)" />
+					<g transform="translate(0,0)" class="wall-top-alt">
+						<image xlink:href="./images/room/room.jpg" mask="url(#wallMaskAlt)" width="1211" height="686" filter="url(#wall-top-alt)" />
 					</g>
-				</svg>
-				<svg id="tinting-layer" xmlns="http://www.w3.org/2000/svg" version="1.1"  viewBox="0 0 1211 686" preserveAspectRatio="xMinYMin meet">
-					<g transform="translate(0,0)" class="wall-tinted">
-						<image xlink:href="./images/room/room.jpg" width="1211" height="686" filter="url(#wall-tinted)" />
-					</g>
-				</svg>
-				<svg id="static-room" xmlns="http://www.w3.org/2000/svg" version="1.1"  viewBox="0 0 1211 686" preserveAspectRatio="xMinYMin meet">
 					<g transform="translate(0,0)">
 						<image xlink:href="./images/room/room.jpg" mask="url(#roomMask)" width="1211" height="686" />
 					</g>
 				</svg>
 			</div>
 		</div>
+
+		<div class="scene-wrapper hidden" id="magnifiedView">
+			<div class="SVG-wrapper">
+				<svg xmlns="http://www.w3.org/2000/svg" version="1.1" class="svgEl" viewBox="0 0 1211 686" preserveAspectRatio="xMinYMin meet">
+					<g transform="translate(0,0)" class="wall-bottom">
+						<image xlink:href="./images/room/room.jpg" width="1211" height="686" filter="url(#wall-bottom)" />
+					</g>
+					<g transform="translate(0,0)" class="wall-top">
+						<image xlink:href="./images/room/room.jpg" mask="url(#wallMask)" width="1211" height="686" filter="url(#wall-top)" />
+					</g>
+					<g transform="translate(0,0)" class="wall-top-alt">
+						<image xlink:href="./images/room/room.jpg" mask="url(#wallMaskAlt)" width="1211" height="686" filter="url(#wall-top-alt)" />
+					</g>
+					<g transform="translate(0,0)">
+						<image xlink:href="./images/room/room.jpg" mask="url(#roomMask)" width="1211" height="686" />
+					</g>
+				</svg>
+			</div>
+		</div>
+
 	</div> <!-- close wrapper-->
 </div> <!-- close wrapper-outer -->
 
@@ -219,8 +272,7 @@
 		var	useAltPaintingWall = false,
 			$body = $( "body" ),
 			$chipSet = $( "#chips" ),
-			$wallTintedFlood = $( "#wall-tinted-flood" ),
-			$wallTinted = $( "#tinting-layer" ),
+			$wallBottomFlood = $( "#wall-bottom-flood" ),
 			$wallTopFlood = $( "#wall-top-flood" ),
 			$wallTopFloodAlt = $( "#wall-top-alt-flood" ),
 			$wallTopMask = $( "#wallTopMask" ),
@@ -228,27 +280,24 @@
 			$smallView = $( "#smallView" ),
 			$smallViewH = $smallView.height(),
 			$largeView = $( "#magnifiedView" ),
-			previousFloodColor = "44aac2";
-			// reFlowPage = function() {
-			// 	console.log("reflow: ");
-			// 	$smallViewH = $smallView.height();
-			// 	$largeView.height( $smallViewH );
-			// };
+			previousFloodColor = "44aac2",
+			reFlowPage = function() {
+				console.log("reflow: ");
+				$smallViewH = $smallView.height();
+				$largeView.height( $smallViewH );
+			};
 
 		$( window ).resize(function() {
-			//	reFlowPage();
+			reFlowPage();
 		});
-		//reFlowPage();
+		reFlowPage();
 		$largeView.removeClass( "hidden" );
 
-		// $( "#details" ).height( $smallViewH );
+		$( "#details" ).height( $smallViewH );
 
 		$chipSet.on( "click", "div", function(){
 			var nextfloodColor = $( this ).css( "background-color" );
 			previousFloodColor = nextfloodColor;
-
-			$wallTinted.css(  "z-index",  "1" );
-
 			if ( !useAltPaintingWall ) {
 				$( ".wall-top" ).css( "display", "block" );
 				$( ".wall-top-alt" ).css( "display", "none" );
@@ -265,12 +314,8 @@
 				useAltPaintingWall = false;
 			}
 			window.setTimeout(function() {
-				$wallTintedFlood.css( "flood-color", previousFloodColor );
-				$wallTinted
-					.css(  { "opacity" : 0,  "z-index" : "9" }  )
-					.animate( { opacity: 1 }, 500, function() {
-						$body.removeClass( "paintingWall paintingAltWall" );
-					});
+				$wallBottomFlood.css( "flood-color", previousFloodColor );
+				$body.removeClass( "paintingWall paintingAltWall" );
 			}, 800);
 		});
 	});

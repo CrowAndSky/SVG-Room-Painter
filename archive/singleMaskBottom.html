@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=10" >
+	<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+	<title>Room Painting with SVG Filters</title>
+
+	<style type="text/css">
+		body {
+			background-color: #222223;
+		}
+		div, svg, body, p {
+			color: #777;
+			font-family: tahoma;
+			padding: 0;
+			margin: 0;
+			font-size: 14px;
+		}
+		p {
+			line-height: 1.65em;
+			margin: 0 0 0.5em;
+		}
+		h2 {
+			color: #333;
+		}
+		#wrapper-outer {
+			margin: 2em auto 0;
+			max-width: 1240px;
+			position: relative;
+			width: 55%;
+		}
+		svg, svg g {
+			height: 100%;
+			position: relative;
+			width: 100%;
+			z-index: 2;
+		}
+		#anim-tint-unmasked,
+		#anim-tint-unmasked img,
+		#anim-tint-masked,
+		#static-room {
+			left: 0;
+			overflow: hidden;
+			position: absolute;
+			top: 0;
+			z-index: 1;
+		}
+		/*#anim-tint-unmasked {
+			/*display: none;
+		}*/
+		#anim-tint-masked,
+		#static-room {
+			/*display: none;*/
+		}
+		#staticTinted {
+			/*visibility: hidden;*/
+		}
+		#static-room {
+			z-index: 999;
+		}
+		#room {
+			position: relative;
+			width: 100%;
+		}
+		#room:after {
+			content: "";
+			display: table;
+			clear: both;
+		}
+		#chips {
+			margin-top: 0.5em;
+			padding-bottom: 10%;
+			width: 100%;
+		}
+		.paintingWall #chips,
+		.paintingAltWall #chips {
+			cursor: not-allowed;
+		}
+		#chips div {
+			cursor: pointer;
+			display: inline-block;
+			height: 100%;
+			margin-right: 0.5%;
+			width: 19.5%;
+		}
+		#chips div:last {
+			margin-right: 0;
+		}
+		#anim-tint-flood {
+			flood-color: #44aac2;
+		}
+		#static-tint-flood {
+			flood-color: #44aac2;
+		}
+	</style>
+
+</head>
+<body>
+
+<div id="wrapper-outer">
+	<div id="room">
+		<svg id="staticTinted" xmlns="http://www.w3.org/2000/svg" version="1.1" class="svgEl" viewBox="0 0 1250 937" preserveAspectRatio="xMinYMin meet">
+			<defs>
+				<filter id="anim-tint">
+					<feFlood id="anim-tint-flood" result="tintHue" />
+					<feBlend mode="multiply" in="tintHue" in2="SourceGraphic" result="tintedWall" />
+				</filter>
+				<filter id="static-tint">
+					<feFlood id="static-tint-flood" result="tintHue" />
+					<feBlend mode="multiply" in="tintHue" in2="SourceGraphic" result="tintedWall" />
+				</filter>
+				<radialGradient id="radialGradient">
+					<stop id="offsetStart" offset="75%" stop-color="white"/>
+					<stop offset="100%" stop-color="black"/>
+				</radialGradient>
+				<mask id="roomMask">
+					<image width="1250" height="937" xlink:href="./images/room/classic-room-alpha.png"></image>
+				</mask>
+				<mask id="wallMask" viewBox="0 0 300 481" preserveAspectRatio="xMinYMin meet">
+					<g class="group">
+						<ellipse fill="url(#radialGradient)" cx="60" cy="60" rx="50" ry="25"/>
+						<!-- <circle fill="url(#radialGradient)" cx="2000" cy="410" r="700" /> -->
+						<rect x="0" y="50" width="2000" height="750" fill="white" />
+					</g>
+				</mask>
+			</defs>
+			<image xlink:href="./images/room/classic-room.jpg" width="1250" height="937" filter="url(#static-tint)" />
+		</svg>
+		<svg id="anim-tint-masked" xmlns="http://www.w3.org/2000/svg" version="1.1" >
+			<image xlink:href="./images/room/classic-room.jpg" mask="url(#wallMask)" filter="url(#anim-tint)" />
+		</svg>
+
+		<svg id="static-room" xmlns="http://www.w3.org/2000/svg" version="1.1"  viewBox="0 0 1250 937" preserveAspectRatio="xMinYMin meet">
+			<image xlink:href="./images/room/classic-room.jpg" mask="url(#roomMask)" width="1250" height="937" />
+		</svg>
+	</div> <!-- close room-->
+	<div id="chips">
+		<div style="background-color:#F7F2D9"></div><div style="background-color:#9C8F76"></div><div style="background-color:#b9af5b"></div><div style="background-color:#bc9c9e"></div><div style="background-color:#90b0ad"></div>
+	</div>
+</div> <!-- close wrapper-outer -->
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+<script type="text/javascript">
+	if(!window.jQuery)  {
+		document.write(unescape("%3Cscript src='jquery.js'%3E%3C/script%3E"));
+	}
+</script>
+<script type="text/javascript" src="raf-polyfill.js"></script>
+
+<script type="text/javascript">
+	$(document).ready( function(){
+		var	useAltPaintingWall = false,
+			$body = $( "body" ),
+			$chipSet = $( "#chips" ),
+			$animTintFlood = $( "#anim-tint-flood" ),
+			$staticTintFlood = $( "#static-tint-flood" ),
+			$staticWall = $( "#staticTinted" ),
+			$animWallMasked = $( "#anim-tint-masked" ),
+			$staticRoom = $( "#room" ),
+			$staticRoomH,
+			$staticRoomW,
+			$wallMaskSVGgroup = $( '#wallMask .group' ),
+			wallMaskSVGgroup = $wallMaskSVGgroup.get( 0 ),
+			$wallMaskSVGcircle = $( '#wallMask ellipse' ),
+			$wallMaskSVGrect = $( '#wallMask rect' ),
+			circleMaskRadius,
+			// initialMaskXtranslate,
+			totalMaskHeight,
+			viewableWallHeight,
+			wallMaskTranslate,
+			wallMaskRate,
+			previousFloodColor = "44aac2",
+			reFlowPage = function() {
+				$staticWallH = Math.floor( $staticWall.height() );
+				$staticWallW = Math.floor( $staticWall.width() );
+				$chipSet.height( Math.round( $staticWallH/10 ) );
+				$animWallMasked.height( $staticWallH ).width( $staticWallW );
+				$animWallMasked.find( "svg" ).attr( "height", $staticWallH );
+				$animWallMasked.find( "svg" ).attr( "width", $staticWallW );
+				$animWallMasked.find( "image" ).attr( "height", $staticWallH );
+				$animWallMasked.find( "image" ).attr( "width", $staticWallW );
+
+				circleMaskRadius = Math.floor( $staticWallH * 0.75 );
+				$wallMaskSVGcircle.attr( "rx", Math.round( ( $staticWallW * 0.873 / 2 ) * 1.43  ) );
+				$wallMaskSVGcircle.attr( "ry", Math.round( $staticWallH * 0.4 ) );
+				$wallMaskSVGcircle.attr( "cx", Math.round( ( $staticWallW * 0.873 / 2 ) * 1.43 + $staticWallW * 0.031 ) );
+				$wallMaskSVGcircle.attr( "cy", Math.floor( $staticWallH * 0.03 ) );
+
+				$wallMaskSVGrect.attr( "x", Math.floor( $staticWallW * 0.031 ) );  // 15/481
+				// endY = $wallMaskSVGrect.attr( "y", Math.floor( $staticWallH * 0.03 ) );  // 10/326
+				viewableWallHeight = Math.round( $staticWallH * 0.804 );
+				$wallMaskSVGrect.attr( "height", viewableWallHeight );  // 262/326
+				$wallMaskSVGrect.attr( "width", Math.round( $staticWallW * 0.873 ) );  //420/481
+				$wallMaskSVGrect.attr( "y", Math.floor( $staticWallH * 0.03 ) );  // 10/326
+
+				totalMaskHeight = Math.round( $staticWallH * 0.4 + viewableWallHeight );
+
+				//console.log("   $staticWallW: " + $staticWallW);
+				wallMaskRate = Math.round( totalMaskHeight / 60 );
+				//initialMaskTranslate = totalMaskHeight;
+				wallMaskTranslate = totalMaskHeight;
+				$staticRoom
+					.height( $staticWallH )
+					.width( $staticWallW );
+
+				// console.log("initialUnmaskXtranslate: " + initialUnmaskXtranslate + "     initialMaskXtranslate: " + initialMaskXtranslate + "     wallUnmaskRate: " + wallUnmaskRate + "     wallMaskRate: " + wallMaskRate);
+			};
+			function animate() {
+				requestID = requestAnimationFrame(animate);
+				if ( wallMaskTranslate >= 0 ) { //$staticWallW
+					//console.log("Math.round( wallMaskRate ): " + Math.round( wallMaskRate ) + "     Math.round( wallUnmaskRate ): " + Math.round( wallUnmaskRate ));
+					wallMaskTranslate -= wallMaskRate;
+					wallMaskSVGgroup.setAttribute( "transform", "translate( 0, " + wallMaskTranslate +  " )" );
+				} else {
+					cancelAnimationFrame(requestID);
+					// $staticTintFlood.css( "flood-color", previousFloodColor );
+					// $animWallUnmasked.css( "z-index", 1 );
+					// $animWallMasked.css( "z-index", 1 );
+					// $staticWall
+					// 	.css(  { "opacity" : 0,  "z-index" : "9" }  )
+					// 	.animate( { opacity: 1 }, 350, function() {
+					// 		wallMaskTranslate = initialMaskXtranslate;
+				// 			wallUnmaskXtranslate = initialUnmaskXtranslate;
+					// 		$body.removeClass( "paintingWall" );
+					// 	});
+				}
+			}
+
+		$( window ).resize(function() {
+			reFlowPage();
+		});
+		reFlowPage();
+
+		$chipSet.on( "click", "div", function(){
+			if ( !$body.hasClass( ".paintingWall" ) ) {
+				$animWallMasked.css( "z-index", 9 );
+				var nextfloodColor = $( this ).css( "background-color" );
+				previousFloodColor = nextfloodColor;
+				$staticWall.css(  "z-index",  "1" );
+				$animTintFlood.css( "flood-color", nextfloodColor );
+				$body.addClass( "paintingWall" );
+
+				requestID = requestAnimationFrame(animate);
+			} else {
+				console.log("tint operation blocked");
+			}
+		});
+	});
+
+</script>
+</body>
+</html>

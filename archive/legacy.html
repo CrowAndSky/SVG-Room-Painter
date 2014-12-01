@@ -230,7 +230,7 @@
 				requestID = requestAnimationFrame(animate);
 				if ( wallMaskXtranslate < 130 ) {
 					currentWallMaskSVG.setAttribute( "transform", "translate(" + wallMaskXtranslate + ",0)" );
-					wallMaskXtranslate += 80;
+					wallMaskXtranslate += 20;
 				} else {
 					cancelAnimationFrame(requestID);
 					$wallTintedFlood.css( "flood-color", previousFloodColor );
@@ -278,16 +278,6 @@
 
 					useAltPaintingWall = false;
 				}
-				// window.setTimeout(function() {
-				// 	// $wallTintedFlood.css( "flood-color", previousFloodColor );
-				// 	// $wallTinted
-				// 	// 	.css(  { "opacity" : 0,  "z-index" : "9" }  )
-				// 	// 	.animate( { opacity: 1 }, 350, function() {
-				// 	// 		wallMaskXtranslate = -2800;
-				// 	// 		wallMaskAltXtranslate = -2800;
-				// 	// 		$body.removeClass( "paintingWall paintingAltWall" );
-				// 	// 	});
-				// }, 2000);
 			} else {
 				console.log("tint operation blocked");
 			}
