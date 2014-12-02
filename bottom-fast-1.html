@@ -186,16 +186,10 @@ make the animatied layer non-retina -->
                 initImageTranslate = $staticWallH;
                 wallMaskRate = Math.round( initImageTranslate / 5 );
                 wallMaskTranslate = initMaskTranslate;
-
-
-
-
-
-                 // ########################### translate3d( tx, ty, tz )
-
-
-                $animWallMasked.css( { transform: 'translateY( ' + initMaskTranslate + 'px )' } );
-                animWallMaskedImg.setAttribute( 'y', -initImageTranslate );
+                //$animWallMasked.css( { transform: 'translateY( ' + initMaskTranslate + 'px )' } );
+                $animWallMasked.css( { transform: 'translate3d( 0,  ' + initMaskTranslate + 'px, 0 )' } );
+                $animWallMaskedImg.css( { transform: 'translate3d( 0,  ' + -initImageTranslate + 'px, 0 )' } );
+                //animWallMaskedImg.setAttribute( 'y', -initImageTranslate );
                 $staticRoom
                     .height( $staticWallH )
                     .width( $staticWallW );
@@ -204,20 +198,29 @@ make the animatied layer non-retina -->
                 requestID = requestAnimationFrame(animate);
                 if ( wallMaskTranslate > -initMaskTranslate ) { //$staticWallW
                     wallMaskTranslate -= wallMaskRate;
-                    $animWallMasked.css( { transform: 'translateY( ' + wallMaskTranslate + 'px )' } );
-                    animWallMaskedImg.setAttribute( 'y', -wallMaskTranslate );
+                    $animWallMasked.css( { transform: 'translate3d( 0,  ' + wallMaskTranslate + 'px, 0 )' } );
+                    //$animWallMasked.css( { transform: 'translateY( ' + wallMaskTranslate + 'px )' } );
+                    $animWallMaskedImg.css( { transform: 'translate3d( 0,  ' + -wallMaskTranslate + 'px, 0 )' } );
+                    //animWallMaskedImg.setAttribute( 'y', -wallMaskTranslate );
                 } else {
-                    $animWallMasked.css( { transform: 'translateY( -' + $staticWallH + 'px )' } );
-                    animWallMaskedImg.setAttribute( 'y', $staticWallH );
+                    //$animWallMasked.css( { transform: 'translateY( -' + $staticWallH + 'px )' } );
+
+                    $animWallMasked.css( { transform: 'translate3d( 0,  ' + -$staticWallH + 'px, 0 )' } );
+                    $animWallMaskedImg.css( { transform: 'translate3d( 0,  ' + $staticWallH + 'px, 0 )' } );
+
+                    // animWallMaskedImg.setAttribute( 'y', $staticWallH );
                     cancelAnimationFrame(requestID);
                     $staticTintFlood.css( "flood-color", previousFloodColor );
-                    $animWallMasked.css( "z-index", 1 );
+                    // $animWallMasked.css( "z-index", 1 );
                     $staticWall
-                        .css(  { "opacity" : 0,  "z-index" : "9" }  )
+                        .css(  { "opacity" : 0,  "z-index" : "99" }  )
                         .animate( { opacity: 1 }, 350, function() {
+                            $animWallMasked.css( "z-index", 1 );
                             wallMaskTranslate = initImageTranslate;
-                            $animWallMasked.css( { transform: 'translateY( ' + initMaskTranslate + 'px )' } );
-                            animWallMaskedImg.setAttribute( 'y', -initImageTranslate );
+                            // $animWallMasked.css( { transform: 'translateY( ' + initMaskTranslate + 'px )' } );
+                            // animWallMaskedImg.setAttribute( 'y', -initImageTranslate );
+                            $animWallMasked.css( { transform: 'translate3d( 0,  ' + initMaskTranslate + 'px, 0 )' } );
+                            $animWallMaskedImg.css( { transform: 'translate3d( 0,  ' + -initImageTranslate + 'px, 0 )' } );
                             $body.removeClass( "paintingWall" );
                          });
                 }

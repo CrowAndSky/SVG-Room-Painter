@@ -194,7 +194,9 @@ make the animatied layer non-retina -->
                  // ########################### translate3d( tx, ty, tz )
 
 
-                $animWallMasked.css( { transform: 'translateY( ' + initMaskTranslate + 'px )' } );
+                //$animWallMasked.css( { transform: 'translateY( ' + initMaskTranslate + 'px )' } );
+                $animWallMasked.css( { transform: 'translate3d( 0,  ' + initMaskTranslate + 'px, 0 )' } );
+                //$animWallMaskedImg.css( { transform: 'translate3d( 0,  ' + -initImageTranslate + 'px, 0 )' } );
                 animWallMaskedImg.setAttribute( 'y', -initImageTranslate );
                 $staticRoom
                     .height( $staticWallH )
@@ -204,10 +206,13 @@ make the animatied layer non-retina -->
                 requestID = requestAnimationFrame(animate);
                 if ( wallMaskTranslate > -initMaskTranslate ) { //$staticWallW
                     wallMaskTranslate -= wallMaskRate;
+                    $animWallMasked.css( { transform: 'translate3d( 0,  ' + wallMaskTranslate + 'px, 0 )' } );
                     $animWallMasked.css( { transform: 'translateY( ' + wallMaskTranslate + 'px )' } );
+                    //$animWallMaskedImg.css( { transform: 'translate3d( 0,  ' + -initImageTranslate + 'px, 0 )' } );
                     animWallMaskedImg.setAttribute( 'y', -wallMaskTranslate );
                 } else {
-                    $animWallMasked.css( { transform: 'translateY( -' + $staticWallH + 'px )' } );
+                    //$animWallMasked.css( { transform: 'translateY( -' + $staticWallH + 'px )' } );
+                    $animWallMasked.css( { transform: 'translate3d( 0,  ' + $staticWallH + 'px, 0 )' } );
                     animWallMaskedImg.setAttribute( 'y', $staticWallH );
                     cancelAnimationFrame(requestID);
                     $staticTintFlood.css( "flood-color", previousFloodColor );
